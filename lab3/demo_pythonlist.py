@@ -20,8 +20,8 @@ def extend_test(l: list, v2: list):
     l.extend(v2)
     return "Extended with " + str(v2)
 
-def index_test(l: list):
-    return l.index()
+def index_test(l: list, i: str):
+    return l.index(i)
 
 def insert_test(l: list):
     return l.insert("Hello from the other side")
