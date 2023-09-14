@@ -1,0 +1,8 @@
+## Compiling
+
+gcc lab8.c -o lab8
+
+## Running
+
+Normal: ./lab8
+Inline: ./lab8 [Numbers] (./lab8 1.1 2.2 3.3 ...)
