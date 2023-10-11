@@ -38,6 +38,7 @@ struct vector {
 
 // Function declarations
 matrix new_matrix(const int rows, const int cols);
+void delete_matrix(matrix* m);
 void print_matrix_full(const matrix * mat, char* varname );
 matrix matrix_add(const matrix * A, const matrix * B);
 matrix matrix_sub(const matrix * A, const matrix * B);
@@ -47,6 +48,7 @@ matrix matrix_transpose(const matrix* A);
 double matrix_mean(const matrix* A);
 //
 vector new_vector(const int size);
+void delete_vector(vector* v);
 void print_vector_full(const vector * vec, char* varname );
 vector vector_add(const vector * x, const vector * y);
 vector vector_sub(const vector * x, const vector * y);

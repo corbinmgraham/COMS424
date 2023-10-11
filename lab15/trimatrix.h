@@ -1,6 +1,7 @@
 #ifndef __TRIMATRIX_H__
 #define __TRIMATRIX_H__
 #include "matrix.h"
+
 typedef struct trimatrix trimatrix;
 struct trimatrix
 {
@@ -30,8 +31,7 @@ void tset(trimatrix*,const int,const int,const double);
 void print_trimatrix_full(const trimatrix*,char*);
 trimatrix trimatrix_add(const trimatrix*,const trimatrix*);
 trimatrix trimatrix_sub(const trimatrix*,const trimatrix*);
-trimatrix trimatrix_dot_mult(const trimatrix*,
-			     const trimatrix*);
+trimatrix trimatrix_dot_mult(const trimatrix*, const trimatrix*);
 vector trimatrix_vector_mult(const trimatrix*,const vector*);
 vector trisolve(const trimatrix*,const vector*);
 pentamatrix new_pentamatrix(const int);
@@ -42,4 +42,5 @@ void pentaset(pentamatrix*,const int,const int,const double);
 trimatrix grab_sub_trimatrix(trimatrix* T, int k1, int k2);
 trimatrix merge_sub_trimatrix(trimatrix* T1, trimatrix* T2);
 trimatrix matrix_mult_to_trimatrix(const matrix* A, const matrix* B);
+
 #endif

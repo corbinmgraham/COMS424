@@ -27,6 +27,15 @@ matrix new_matrix(const int rows, const int cols) {
 }
 
 /**
+ * @brief Frees up matrix
+ * 
+ * @param m Matrix
+ */
+void delete_matrix(matrix* m) {
+    free(m->val);
+}
+
+/**
  * @brief Prints a matrix to stdout
  * 
  * @param mat Matrix
@@ -167,6 +176,15 @@ vector new_vector ( const int size) {
     { vec.val[i] = 0.0; }
 
     return vec;
+}
+
+/**
+ * @brief Frees up vector
+ * 
+ * @param v Vector
+ */
+void delete_vector(vector* v) {
+    free(v->val);
 }
 
 /**

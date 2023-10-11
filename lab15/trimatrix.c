@@ -409,7 +409,7 @@ trimatrix matrix_mult_to_trimatrix(const matrix* A, const matrix* B)
 	 }
    }
 
-   delete_matrix(&Btranspose);
+   // matrix_delete(&Btranspose);
    
    return C;
 }
