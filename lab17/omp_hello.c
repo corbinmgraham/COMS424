@@ -4,7 +4,7 @@
 #include <omp.h>
 #endif
 
-int main(int argc , char* argv [])
+int main(int argc, char* argv[])
 {
     void usage(const char* prog_name);
     void hello(const int thread_count);
