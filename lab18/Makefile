@@ -2,7 +2,6 @@ CC 		= gcc
 FFLAGS = -Wall -std=c99 -Xpreprocessor -fopenmp
 LFLAGS = -lomp
 OBJECTS	= main.o \
-		  matrix.o \
 
 .PHONY: help
 
