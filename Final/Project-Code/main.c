@@ -128,44 +128,6 @@ void tmp_img_gen() {
 }
 
 /**
- * @brief Get the input object
- * 
- * @param argc 
- * @param argv 
- * @param my_rank 
- * @param comm_sz 
- * @param a 
- * @param b 
- * @param N 
- */
-void chunk_image()
-{
-    // void usage(const char * prog_name);
-    // if(my_rank == 0) {
-    //     if(argc != 4) { usage(argv [0]); }
-
-    //     *a = strtod(argv [1], NULL);
-    //     *b = strtod(argv [2], NULL);
-    //     *N = strtol(argv [3], NULL, 10);
-    //     if(*N <=0) { usage(argv [0]); }
-    //     if(*N% comm_sz !=0) { usage(argv [0]); }
-    //     for(int i=1; i< comm_sz; i++) {
-    //         MPI_Send(a, 1, MPI_DOUBLE, i, 0, MPI_COMM_WORLD);
-    //         MPI_Send(b, 1, MPI_DOUBLE, i, 0, MPI_COMM_WORLD);
-    //         MPI_Send(N, 1, MPI_INT, i, 0, MPI_COMM_WORLD);
-    //     }
-    // }
-    // else {
-    //     MPI_Recv(a, 1, MPI_DOUBLE, 0, 0, MPI_COMM_WORLD, 
-    //     MPI_STATUS_IGNORE);
-    //     MPI_Recv(b, 1, MPI_DOUBLE, 0, 0, MPI_COMM_WORLD, 
-    //     MPI_STATUS_IGNORE);
-    //     MPI_Recv(N, 1, MPI_INT, 0, 0, MPI_COMM_WORLD, 
-    //     MPI_STATUS_IGNORE);
-    // }
-}
-
-/**
  * @brief Entry for Program
  * 
  * @param argc Number of arguments
@@ -177,7 +139,7 @@ int main(int argc, char* argv [])
     // Set the random to 1 for reproducibility
     srand(1);
 
-    // tmp_img_gen();
+    tmp_img_gen();
     // display_image();
     
     
@@ -197,7 +159,67 @@ int main(int argc, char* argv [])
 
     // Run local chunk
 
-    chunk_image();
+    // if(my_rank == 0) {
+    //     chunk_image(0, 0);
+    // } else {
+
+    // }
+
+    // Calculate the number of rows per process
+    int process_rows = M / comm_sz;
+    int remainingRows = M % comm_sz;
+
+    // Calculate the starting row for each process
+    int start_row = my_rank * process_rows + (my_rank < remainingRows ? my_rank : remainingRows);
+
+    // Calculate the number of rows for each process
+    int local_rows = process_rows + (my_rank < remainingRows ? 1 : 0);
+
+    // Allocate memory for the local matrix
+    int local_img[local_rows][N][3];
+
+    // move values to local image
+    for (int i = 0; i < local_rows; i++) {
+        for (int j = 0; j < N; j++) {
+            local_img[i][j][0] = img[start_row + i][j][0];
+            local_img[i][j][1] = img[start_row + i][j][1];
+            local_img[i][j][2] = img[start_row + i][j][2];
+        }
+    }
+
+    // encrypt local image chunk
+    for (int i = 0; i < local_rows; i++) {
+        for (int j = 0; j < N; j++) {
+            local_img[i][j][0] = encrypt(local_img[i][j][0]);
+            local_img[i][j][1] = encrypt(local_img[i][j][1]);
+            local_img[i][j][2] = encrypt(local_img[i][j][2]);
+        }
+    }
+
+    // modify local image chunk
+    for (int i = 0; i < local_rows; i++) {
+        for (int j = 0; j < N; j++) {
+            local_img[i][j][0] = modify(local_img[i][j][0], 10);
+            local_img[i][j][1] = modify(local_img[i][j][1], 10);
+            local_img[i][j][2] = modify(local_img[i][j][2], 10);
+        }
+    }
+
+    // Recombine chunks and decrypt
+    MPI_Gather(local_img, local_rows * N, MPI_INT, img, local_rows * N, MPI_INT, 0, MPI_COMM_WORLD);
+
+    printf("----------\n");
+    printf("Local Rank: %d\n", my_rank);
+    printf("Local Size: %.2f%%\n", (double) ((process_rows/M) * 100));
+    printf("----------\n");
+
+    // encrypt local image chunk
+    // for (int i = 0; i < local_rows; i++) {
+    //     for (int j = 0; j < N; j++) {
+    //         local_img[i][j]
+    //     }
+    // }
+    
 
     // const double h =(b-a)/((double)N);
     // const int local_N = N/ comm_sz;
