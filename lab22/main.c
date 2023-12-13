@@ -4,6 +4,13 @@
 #include <mpi.h>
 #include <math.h>
 
+/**
+ * @brief Entry for Program
+ * 
+ * @param argc 
+ * @param argv 
+ * @return int 
+ */
 int main(int argc, char* argv [])
 {
     // Setup MPI code
@@ -68,6 +75,17 @@ int main(int argc, char* argv [])
     return 0;
 }
 
+/**
+ * @brief Get the input object
+ * 
+ * @param argc 
+ * @param argv 
+ * @param my_rank 
+ * @param comm_sz 
+ * @param a 
+ * @param b 
+ * @param N 
+ */
 void get_input(int argc, char* argv[], 
 const int my_rank, 
 const int comm_sz, 
@@ -136,10 +154,10 @@ const int N, const double h)
 }
 
 /**
- * @brief Function
+ * @brief Independent Calculation Function
  * 
  * @param x 
- * @return double 
+ * @return double Exp of X
  */
 double func(const double x) 
 {
